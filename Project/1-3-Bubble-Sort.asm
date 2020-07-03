@@ -34,24 +34,21 @@ code segment
 			
 			mov cx, 0
 			mov bx, 0
+			push ax
+			push cx
+			mov cx, ax
+			mov ax, len
+			sub ax, cx
+			pop cx
+			inc bx
 			forB2:
-				push ax
-				push bx
-				push cx
-				mov cx, ax
-				mov ax, len
-				sub ax, cx
-				;inc bx
 				cmp bx, ax
-				pop cx
-				pop bx
-				pop ax
 				jae endforB2
 					
 					ifB1:
 						push ax
-						mov al, s[bx]
-						cmp al, s[bx+1]
+						mov al, s[bx-1]
+						cmp al, s[bx]
 						pop ax
 						jbe endifB1
 						
@@ -64,7 +61,7 @@ code segment
 				inc bx
 				jmp forB2
 				endforB2:
-					nop
+					pop ax
 			
 			ifB2:
 				cmp cx, 0
@@ -85,13 +82,13 @@ code segment
 		push ax
 		push cx
 		
-		mov al, s[bx]
-		mov cl, s[bx+1]
-		mov s[bx], cl
-		mov s[bx+1], al
+		mov al, s[bx-1]
+		mov cl, s[bx]
+		mov s[bx-1], cl
+		mov s[bx], al
 		
-		pop ax
 		pop cx
+		pop ax
 		
 		ret
 code ends
